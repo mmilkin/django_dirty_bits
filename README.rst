@@ -18,6 +18,9 @@ Registering your models::
 
     dirty_bits.register(Author)
 
+Registering all of your models::
+
+    dirty_bits.register_all()
 
 Checking dirtiness::
 
