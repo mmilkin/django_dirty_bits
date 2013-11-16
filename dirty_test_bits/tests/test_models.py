@@ -1,4 +1,7 @@
+from mock import patch, call
+
 from django.test import TestCase
+from dirty_bits import register_all
 from dirty_test_bits.models import Article, Author, Note, NoteBook
 
 
@@ -46,3 +49,12 @@ class TestModels(TestCase):
 
     def test_unregistered(self):
         self.assertFalse(hasattr(self.author, 'is_dirty'))
+
+    @patch('dirty_bits.register')
+    def test_register_all(self, register):
+        register_all()
+        calls = register.call_args_list
+        self.assertTrue(call(Note) in calls)
+        self.assertTrue(call(NoteBook) in calls)
+        self.assertTrue(call(Author) in calls)
+        self.assertTrue(call(Article) in calls)

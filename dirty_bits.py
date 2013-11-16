@@ -1,4 +1,4 @@
-from django.db.models import Manager, Model
+from django.db.models import Manager, Model, get_models
 from django.db.models.signals import post_init
 from threading import Lock
 
@@ -6,6 +6,12 @@ REGISTRY_LOCK = Lock()
 
 REGISTRY = set()
 NEW_MODEL_HASH = None
+
+
+def register_all():
+    models = get_models()
+    for model in models:
+        register(model)
 
 
 def register(cls):
