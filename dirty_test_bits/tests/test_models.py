@@ -37,9 +37,10 @@ class TestModels(TestCase):
         self.assertTrue(self.note_book.is_dirty())
         note_book = NoteBook.objects.get(pk=self.article.pk)
         self.assertFalse(note_book.is_dirty())
-        author = Author.objects.create(name='Bob')
-        article = Article.objects.create(author=author, name='Almost the best article ever!')
+        author = Author.objects.create(name='Bob Smith')
+        article = Article.objects.create(author=author, name='Almost the best article ever 2!')
         note_book.articles.add(article)
+        print 'NoteBook dirty check %s' % note_book
         self.assertTrue(note_book.is_dirty())
 
     def test_is_dirty_1to1(self):
