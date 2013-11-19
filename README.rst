@@ -19,6 +19,7 @@ Examples
 1. Registering your models
 
   ::
+  
     import dirty_bits
 
     class Author(models.Model):
@@ -29,6 +30,7 @@ Examples
 2. Registering all of your models
 
   ::
+  
     dirty_bits.register_all()
 
 3. Checking dirtiness
