@@ -14,7 +14,8 @@ class TestModels(TestCase):
         self.note = Note.objects.create(content='Best note ever!', article=self.article)
 
     def test_is_dirty_simple(self):
-        self.assertTrue(self.note.is_dirty())
+        note = Note(content='Best note ever!')
+        self.assertTrue(note.is_dirty())
         note = Note.objects.get(pk=self.note.pk)
         self.assertFalse(note.is_dirty())
         note.content = 'Steve'
@@ -34,13 +35,13 @@ class TestModels(TestCase):
         note.save()
 
     def test_is_dirty_m2m(self):
-        self.assertTrue(self.note_book.is_dirty())
+        notebook = NoteBook(name='Steve')
+        self.assertTrue(notebook.is_dirty())
         note_book = NoteBook.objects.get(pk=self.article.pk)
         self.assertFalse(note_book.is_dirty())
         author = Author.objects.create(name='Bob Smith')
         article = Article.objects.create(author=author, name='Almost the best article ever 2!')
         note_book.articles.add(article)
-        print 'NoteBook dirty check %s' % note_book
         self.assertTrue(note_book.is_dirty())
 
     def test_is_dirty_1to1(self):
@@ -59,3 +60,9 @@ class TestModels(TestCase):
         self.assertTrue(call(NoteBook) in calls)
         self.assertTrue(call(Author) in calls)
         self.assertTrue(call(Article) in calls)
+
+    def test_post_save_dirty(self):
+        notebook = NoteBook(name='Steve')
+        self.assertTrue(notebook.is_dirty())
+        notebook.save()
+        self.assertFalse(notebook.is_dirty())

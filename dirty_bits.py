@@ -1,5 +1,5 @@
 from django.db.models import get_models
-from django.db.models.signals import post_init
+from django.db.models.signals import post_init, post_save
 from threading import Lock
 
 REGISTRY_LOCK = Lock()
@@ -35,7 +35,6 @@ def register(cls):
                 (instance._meta.fields + instance._meta.many_to_many)
             )
         )
-
         return hash(model_key_values)
 
     def is_dirty(self):
@@ -51,4 +50,8 @@ def register(cls):
     def _post_init(sender, instance, **kwargs):
         _init_hash(sender, instance)
 
+    def _post_save(sender, instance, **kwargs):
+        _init_hash(sender, instance)
+
+    post_save.connect(_post_save, sender=cls, weak=False)
     post_init.connect(_post_init, sender=cls, weak=False)
