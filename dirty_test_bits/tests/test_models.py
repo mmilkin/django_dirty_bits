@@ -42,7 +42,9 @@ class TestModels(TestCase):
         author = Author.objects.create(name='Bob Smith')
         article = Article.objects.create(author=author, name='Almost the best article ever 2!')
         note_book.articles.add(article)
-        self.assertTrue(note_book.is_dirty())
+        # we are not tracking many to many relationships since they
+        # are django saved on add any way
+        self.assertFalse(note_book.is_dirty())
 
     def test_is_dirty_1to1(self):
         author = Author.objects.create(name='Bob')
