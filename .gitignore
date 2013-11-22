@@ -5,3 +5,4 @@ django_dirty_bits.egg-info/*
 *.egg-info
 .coverage
 .idea/*
+dist/*

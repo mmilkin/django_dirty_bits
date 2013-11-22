@@ -1,4 +1,4 @@
-from django.db.models import get_models
+from django.db.models import get_models, ManyToManyField
 from django.db.models.signals import post_init, post_save
 from threading import Lock
 
@@ -26,12 +26,20 @@ def register(cls):
         else:
             instance.__dirty_hash = NEW_MODEL_HASH
 
+    def _convert_value(field, instance):
+        # Ignoring many to many since django calls save
+        # Trying to track this relationship causes performance issues
+        if isinstance(field, ManyToManyField):
+            return None
+        else:
+            return field.value_to_string(instance)
+
     def _get_hash(instance):
         if not instance.pk:
             return NEW_MODEL_HASH
         model_key_values = tuple(
             (
-                (field.name, field.value_to_string(instance)) for field in
+                (field.name, _convert_value(field, instance)) for field in
                 (instance._meta.fields + instance._meta.many_to_many)
             )
         )
