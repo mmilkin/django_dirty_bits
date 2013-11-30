@@ -30,7 +30,7 @@ def register(cls, strict=False):
                 instance
             )
             if instance.__strict_dirty_checking:
-                # Only store the old data if we are in strict mode
+                # Only store the old data if in strict mode
                 instance.__old_values = old_values
         else:
             instance.__dirty_hash, instance.__old_values = NEW_MODEL_HASH, None
