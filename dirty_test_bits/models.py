@@ -6,6 +6,10 @@ class Author(models.Model):
     name = models.TextField()
 
 
+class Publisher(models.Model):
+    name = models.TextField(null=True)
+
+
 class Article(models.Model):
     """Good Authors get it right the first time"""
     author = models.OneToOneField(Author, primary_key=True)
@@ -13,7 +17,7 @@ class Article(models.Model):
 
 
 class NoteBook(models.Model):
-    articles = models.ManyToManyField(Article, related_name='books')
+    articles = models.ManyToManyField(Article, related_name='books', through='Volume')
     name = models.TextField(null=True, blank=True)
 
 
@@ -26,6 +30,19 @@ class Note(models.Model):
         return self.content
 
 
+class Person(models.Model):
+    name = models.CharField(max_length=128)
+
+
+class Volume(models.Model):
+    article = models.ForeignKey(Article)
+    book = models.ForeignKey(NoteBook)
+    name = models.TextField(null=True, blank=True)
+
+
 register(Note)
 register(NoteBook)
 register(Article)
+register(Volume)
+
+register(Person, strict=True)
