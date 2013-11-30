@@ -1,3 +1,4 @@
+django
 coverage
 flake8
 django-discover-runner
