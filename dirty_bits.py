@@ -26,10 +26,12 @@ def register(cls, strict=False):
 
     def _init_hash(sender, instance):
         if sender in REGISTRY:
-            instance.__dirty_hash, instance.__old_values = cls._get_hash(
-                instance,
-                instance.__strict_dirty_checking
+            instance.__dirty_hash, old_values = cls._get_hash(
+                instance
             )
+            if instance.__strict_dirty_checking:
+                # Only store the old data if we are in strict mode
+                instance.__old_values = old_values
         else:
             instance.__dirty_hash, instance.__old_values = NEW_MODEL_HASH, None
 
