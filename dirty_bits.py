@@ -55,9 +55,6 @@ def register(cls, strict=False):
 
         return hash_fnc(model_key_values), model_key_values
 
-    def __compute_hash(model_key_values):
-        return hash(model_key_values)
-
     def is_dirty(self):
         if self.__dirty_hash == NEW_MODEL_HASH:
             # initial state of a model is dirty
