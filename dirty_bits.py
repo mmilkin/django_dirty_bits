@@ -41,7 +41,7 @@ def register(cls, strict=False):
         else:
             return field.value_to_string(instance)
 
-    def _get_hash(instance, strong=False):
+    def _get_hash(instance):
         model_key_values = tuple(
             (
                 (field.name, _convert_value(field, instance)) for field in
