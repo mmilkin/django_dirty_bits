@@ -1,4 +1,8 @@
-from django.apps import apps
+try:  # Django 1.9+
+    from django.apps import apps
+    get_models = apps.get_models
+except ImportError:  # Django < 1.9
+    from django.db.models import get_models
 from django.db.models import ManyToManyField
 from django.db.models.signals import post_init, post_save
 from threading import Lock
@@ -12,7 +16,7 @@ NEW_MODEL_HASH = None
 
 
 def register_all(strict=False):
-    models = apps.get_models()
+    models = get_models()
     for model in models:
         register(model, strict)
 
